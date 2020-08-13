@@ -27,8 +27,6 @@ class ArtistSerializer(serializers.ModelSerializer):
 
 
 class SongMasterSerializer(serializers.ModelSerializer):
-    # album = AlbumSerializer(many=True,read_only=True)
-
     class Meta:
         model = SongMaster
         depth = 1
