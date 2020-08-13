@@ -57,8 +57,7 @@ class SearchByArtist(generics.ListAPIView):
 
 class AutoSuggest(generics.GenericAPIView):
 
-    @staticmethod
-    def get(request, *args, **kwargs):
+    def get(self,request, *args, **kwargs):
         songs_queryset = SongMaster.objects.all()
         songs_serializer = SongMasterSerializer(songs_queryset,many=True)
         songs = songs_serializer.data
