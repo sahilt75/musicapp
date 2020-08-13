@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import AddRatingView,SearchByGenre,SearchByAlbum,SearchByTitle,SearchByArtist,SongsListView
+from .views import *
 
 urlpatterns = [
     path('songs/', SongsListView.as_view(),name='songslist'),
+    path('songs/<int:pk>/autosuggest/', AutoSuggest.as_view(),name='autosuggest'),
     path('songs/rating/', AddRatingView.as_view(),name='addrating'),
     path('songs/searchbygenre/', SearchByGenre.as_view(),name='searchsongsbygenre'),
     path('songs/searchbyalbum/', SearchByAlbum.as_view(),name='searchbyalbum'),

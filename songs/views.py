@@ -5,6 +5,8 @@ from .models import SongMaster,Rating,SongArtist
 from statistics import mean
 from rest_framework.response import Response
 from rest_framework import filters
+from playlist.models import Playlist,PlaylistSong
+from playlist.serializers import PlaylistSongSerializer
 
 class AddRatingView(mixins.CreateModelMixin,generics.GenericAPIView):
     serializer_class = AddRatingSerializer
@@ -52,3 +54,21 @@ class SearchByArtist(generics.ListAPIView):
     serializer_class = SongArtistSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['artist__artist']
+
+class AutoSuggest(generics.GenericAPIView):
+
+    @staticmethod
+    def get(request, *args, **kwargs):
+        songs_queryset = SongMaster.objects.all()
+        songs_serializer = SongMasterSerializer(songs_queryset,many=True)
+        songs = songs_serializer.data
+
+        playlist_songs = PlaylistSong.objects.filter(playlist__user_id=kwargs['pk'])
+        playlist_songs_serializer = PlaylistSongSerializer(playlist_songs,many=True)
+        playlist_songs_serializer = playlist_songs_serializer.data
+        genre_list = [item['song']['genre'] for item in playlist_songs_serializer]
+        album_list = [item['song']['album'] for item in playlist_songs_serializer]
+        suggested_songs = [item for item in songs if item['genre']['id']  in genre_list or item['album']['id']  in album_list]
+
+        return  Response({'status':200,'message':'Suggested songs based on your playlist','data':suggested_songs})
+

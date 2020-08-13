@@ -1,13 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views import View
-from rest_framework import mixins
-from rest_framework import generics
-from .serializers import RegisterUserSerializer,LoginSerializer
-from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from rest_framework import generics
+from rest_framework import mixins
+from rest_framework.response import Response
+
+from .serializers import RegisterUserSerializer, LoginSerializer
 
 
 class RegisterView(mixins.CreateModelMixin,generics.GenericAPIView):
